@@ -33,11 +33,12 @@ export class TicketInfoService {
             if (payload != undefined &&
               payload.message.includes("New visits are not available until visitsOnBranchCache is refreshed") == true) {
               isVisitCacheUpdate = false;
+              let convertToQueueEntityCallback = this.convertToQueueEntity
               setTimeout(function () {
                 MobileTicketAPI.getVisitStatus(
                   (queueObj: any) => {
                     isVisitCacheUpdate = true;
-                    success(this.convertToQueueEntity(queueObj));
+                    success(convertToQueueEntityCallback(queueObj));
                   },
                   (xhr, status, msg) => {
                     isVisitCacheUpdate = true;
